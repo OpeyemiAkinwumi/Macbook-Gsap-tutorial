@@ -8,7 +8,7 @@ Source: https://sketchfab.com/3d-models/macbook-pro-m3-16-inch-2024-8e34fc2b3031
 Title: macbook pro M3 16 inch 2024
 */
 
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useVideoTexture } from "@react-three/drei";
 import type { ThreeElements } from "@react-three/fiber";
 import type { GLTFResult } from "./Macbook-14";
 import * as THREE from "three";
@@ -21,9 +21,11 @@ export default function MacbookModel(props: ThreeElements["group"]) {
     "/models/macbook-transformed.glb",
   ) as unknown as GLTFResult;
 
-  const { color } = useMacbookStore();
+  const { color, texture } = useMacbookStore();
 
   // const texture = useTexture("/screen.png");
+
+  const screen = useVideoTexture(texture);
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -123,9 +125,11 @@ export default function MacbookModel(props: ThreeElements["group"]) {
       />
       <mesh
         geometry={nodes.Object_123.geometry}
-        material={materials.sfCQkHOWyrsLmor}
+        // material={materials.sfCQkHOWyrsLmor}
         rotation={[Math.PI / 2, 0, 0]}
-      />
+      >
+        <meshBasicMaterial map={screen} />
+      </mesh>
       <mesh
         geometry={nodes.Object_127.geometry}
         material={materials.ZCDwChwkbBfITSW}
