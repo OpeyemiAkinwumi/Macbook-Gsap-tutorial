@@ -1,78 +1,137 @@
-# React + TypeScript + Vite
+# Apple-Inspired 3D MacBook Experience
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, Apple-inspired product experience built with **React, TypeScript, Three.js, React Three Fiber, and GSAP**.
 
-Currently, two official plugins are available:
+This project explores how 3D models, scroll-based animations, responsive layouts, and modern frontend techniques can be combined to create an immersive product website similar to Apple's product pages.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Overview
 
-## React Compiler
+The project features interactive MacBook 3D models rendered directly in the browser using **Three.js and React Three Fiber**. Users can interact with the models while scrolling through different sections of the page, with **GSAP and ScrollTrigger** controlling smooth animations and transitions.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+The project also demonstrates how to integrate optimized `.glb` 3D assets into a React/TypeScript application and manipulate their materials dynamically.
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## ✨ Features
 
-## Expanding the ESLint configuration
+- Interactive 3D MacBook models using React Three Fiber
+- GLB/GLTF model integration with `@react-three/drei`
+- Dynamically typed 3D model nodes and materials with TypeScript
+- Interactive model controls with `PresentationControls`
+- Scroll-based animations using GSAP and ScrollTrigger
+- Smooth image positioning and transitions
+- Responsive behavior for desktop and mobile devices
+- Dynamic MacBook color/material changes
+- Reusable React components
+- Responsive media queries
+- Custom animations and transitions
+- Optimized 3D assets using `gltfjsx`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Technologies
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Frontend
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 3D
 
+- Three.js
+- React Three Fiber
+- React Three Drei
+- GLTF / GLB
+
+### Animation
+
+- GSAP
+- GSAP ScrollTrigger
+- `@gsap/react`
+
+### Utilities
+
+- React Responsive
+
+## 🎨 3D Model Integration
+
+The MacBook models were imported as `.glb` assets and converted into React components using **gltfjsx**.
+
+The generated model components expose individual Three.js meshes and materials, allowing the application to manipulate parts of the model programmatically.
+
+For example, the model can be loaded with:
+
+```tsx
+const { nodes, materials, scene } = useGLTF(
+  "/models/macbook-14-transformed.glb",
+);
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+The project also uses TypeScript definitions for the generated GLTF nodes and materials to provide better type safety when working with the 3D model.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🎬 GSAP Animations
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+GSAP is used to create scroll-driven animations throughout the experience.
+
+`ScrollTrigger` controls when animations begin and end based on the user's scroll position.
+
+Example:
+
+```tsx
+gsap.timeline({
+  scrollTrigger: {
+    trigger: sectionEl,
+    start: "top bottom",
+    end: "center center",
+    scrub: 1,
   },
-])
-
+});
 ```
+
+This allows elements to smoothly transition between their initial and final positions as the user scrolls.
+
+## 📱 Responsive Design
+
+The experience adapts to different screen sizes using responsive React logic.
+
+For example:
+
+```tsx
+const isMobile = useMediaQuery({
+  query: "(max-width: 1024px)",
+});
+```
+
+This allows certain animations and 3D behaviors to be adjusted or disabled on smaller devices when necessary for usability and performance.
+
+## 🎯 What I Learned
+
+This project provided hands-on experience with:
+
+- Integrating Three.js into a React application
+- Working with React Three Fiber
+- Loading and manipulating GLTF/GLB models
+- Typing generated Three.js models with TypeScript
+- Working with Three.js scenes, meshes, materials, and groups
+- Using Drei's `PresentationControls`
+- Creating scroll-based animations with GSAP
+- Working with GSAP `ScrollTrigger`
+- Creating reusable animation timelines
+- Handling responsive 3D experiences
+- Managing complex animation state
+- Combining DOM animations with WebGL/3D content
+- Optimizing and structuring 3D assets for the web
+
+## 📌 Purpose
+
+This project was created as a practical exploration of **3D web development and advanced frontend animation**.
+
+The goal was to understand how modern technologies such as **React, TypeScript, Three.js, and GSAP** can work together to build visually rich and interactive web experiences.
+
+## 🚧 Status
+
+This project is currently a work in progress as additional animations, interactions, and performance improvements are being explored.
+
+## 📄 License
+
+This project is for educational and portfolio purposes.
+
+The MacBook 3D model was sourced from Sketchfab and remains subject to its original creator's license.
