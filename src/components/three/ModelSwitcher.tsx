@@ -7,6 +7,7 @@ import MacbookModel16 from "../models/Macbook-16";
 import MacbookModel14 from "../models/Macbook-14";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import * as THREE from "three";
 
 type ModelSwitcherProp = {
   scale: number;
@@ -16,18 +17,22 @@ type ModelSwitcherProp = {
 const ANIMATION_DURATION = 1;
 const OFFSET_DISTANCE = 5; // This determines how far a model will move off screen when it's hidden.
 
-const fadeMeshes = (group, opacity) => {
+const fadeMeshes = (group: THREE.Group | null, opacity: number) => {
   if (!group) return;
 
   group.traverse((child) => {
-    if (child.isMesh) {
+    if (child instanceof THREE.Mesh) {
       child.material.transparent = true;
-      gsap.to(child.material, { opacity, duration: ANIMATION_DURATION });
+
+      gsap.to(child.material, {
+        opacity,
+        duration: ANIMATION_DURATION,
+      });
     }
   });
 };
 
-const moveGroup = (group, x) => {
+const moveGroup = (group: THREE.Group | null, x: number) => {
   if (!group) return;
 
   gsap.to(group.position, {
@@ -37,13 +42,14 @@ const moveGroup = (group, x) => {
 };
 
 export default function ModelSwitcher({ scale, isMobile }: ModelSwitcherProp) {
-  const smallMacbookRef = useRef<HTMLVideoElement>(null);
-  const largeMacbookRef = useRef<HTMLVideoElement>(null);
+  const smallMacbookRef = useRef<THREE.Group>(null);
+  const largeMacbookRef = useRef<THREE.Group>(null);
 
-  const SCALE_LARGE_DESKTOP = 0.08
-  const SCALE_LARGE_MOBILE = 0.05
+  const SCALE_LARGE_DESKTOP = 0.08;
+  const SCALE_LARGE_MOBILE = 0.05;
 
-  const showLargeMacbook = scale === SCALE_LARGE_DESKTOP|| (scale === SCALE_LARGE_MOBILE && isMobile);
+  const showLargeMacbook =
+    scale === SCALE_LARGE_DESKTOP || (scale === SCALE_LARGE_MOBILE && isMobile);
 
   useGSAP(() => {
     if (showLargeMacbook) {
@@ -59,7 +65,7 @@ export default function ModelSwitcher({ scale, isMobile }: ModelSwitcherProp) {
       fadeMeshes(smallMacbookRef.current, 1);
       fadeMeshes(largeMacbookRef.current, 0);
     }
-  }, [scale]);
+  }, [showLargeMacbook]);
 
   const controlsConfig: Partial<PresentationControlProps> = {
     snap: true,
@@ -67,7 +73,7 @@ export default function ModelSwitcher({ scale, isMobile }: ModelSwitcherProp) {
     zoom: 1,
     polar: [-Math.PI, Math.PI],
     azimuth: [-Infinity, Infinity],
-    config: { mass: 1, tension: 0, friction: 0 },
+    // config: { mass: 1, tension: 0, friction: 0 },
   };
 
   return (
